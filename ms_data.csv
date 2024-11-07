@@ -1,3 +1,4 @@
+patient_id,visit_date,age,education_level,walking_speed
 P0001,2020-01-23,34.28,Bachelors,4.4
 P0001,2020-04-16,34.51,Bachelors,4.19
 P0001,2020-07-03,34.72,Bachelors,4.71
