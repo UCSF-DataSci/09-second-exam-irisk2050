@@ -1,5 +1,5 @@
 import scipy.stats
-import statsmodels
+import statsmodels.api as sm
 import os
 import pandas as pd
 import numpy as np
