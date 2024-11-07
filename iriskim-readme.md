@@ -6,27 +6,9 @@ The data cleaning and extraction were fairly easy, with the tips and content fro
   
 ## Question 2: Data Analysis with Python (25 points)
 
-Using the cleaned data and insurance category file from Question 1:
+For step 2, I used a dictionary using the patient_id as keys to make sure that insurance_type was consistent per patient_id. I added random variation around the defined visit costs for each insurance type using np.random.
 
-1. Load and structure the data:
-   - Read the processed CSV file
-   - Convert visit_date to datetime
-   - Sort by patient_id and visit_date
-
-2. Add insurance information:
-   - Read insurance types from `insurance.lst`
-   - Randomly assign (but keep consistent per patient_id)
-   - Generate visit costs based on insurance type:
-     - Different plans have different effects on cost
-     - Add random variation
-
-3. Calculate summary statistics:
-   - Mean walking speed by education level
-   - Mean costs by insurance type
-   - Age effects on walking speed
-
-- All questions: Summarize your efforts and results in `readme.md`
-- Q2: All patients should have consistent insurance types across visits
+For step 3, I grouped months into seasons to do a seasonal analysis of the effect of age on walking speed. What I found is that for within each age group, Winter and Spring were the two seasons with the lowest average walking speed. This makes sense, as generally those seasons have harsh weather outside, making it unfriendly to go out. Aside from the seasonal analysis, there was a general trend where as the age increased, the average walking speed decreased. This tracks, as elderly people are less mobile and thus have more difficulty getting around.
   
 ## Question 3: Statistical Analysis (25 points)
 

@@ -1,7 +1,6 @@
 import os
 import pandas as pd
 import numpy as np
-from statsmodels.tsa.seasonal import seasonal_decompose
 
 # Set working directory.
 os.chdir("/Users/iriskim/Desktop/09-second-exam-irisk2050")
