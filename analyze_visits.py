@@ -66,10 +66,38 @@ print(f"Mean walking speed by education level: {df.groupby('education_level', ob
 print(f"Mean costs by insurance type: {df.groupby('insurance_type', observed = False)['visit_cost'].mean()}")
 
 # Age effects on walking speed.
-## print(min(df['age'])) # 19.2
-## print(max(df['age'])) # 83.82
+print(f"Min age: {min(df['age'])}") # 19.2
+print(f"Max age: {max(df['age'])}") # 83.82
 age_bins = pd.cut(df['age'], bins = range(10, 91, 10), right = False)
 print(f"Mean walking speed by age group: {df.groupby(age_bins, observed = False)['walking_speed'].mean()}")
 
 # Consider seasonal variations in the data.
 # Check file seasonal_variation.ipynb for analysis.
+
+# Spring: March, April, May (months 3, 4, 5)
+# Summer: June, July, August (months 6, 7, 8)
+# Fall: September, October, November (months 9, 10, 11)
+# Winter: December, January, February (months 12, 1, 2)
+
+df2 = df.copy()
+
+# Add a 'season' column based on the month of the visit_date
+def get_season(month):
+    if month in [3, 4, 5]:
+        return 'Spring'
+    elif month in [6, 7, 8]:
+        return 'Summer'
+    elif month in [9, 10, 11]:
+        return 'Fall'
+    else:
+        return 'Winter'
+
+# Apply the get_season function to the 'visit_date' to categorize the season
+df2['season'] = df2['visit_date'].dt.month.apply(get_season)
+
+# Now group by age_bins and season, and calculate the mean walking speed
+seasonal_walking_speed = df2.groupby([age_bins, 'season'], observed = False)['walking_speed'].mean()
+
+# Display the result
+print("Average Walking Speed per Age Group per Season:")
+print(seasonal_walking_speed)
