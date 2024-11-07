@@ -25,15 +25,3 @@ echo "Medicare\nMedicaid\nPrivate\nOther" > insurance.lst
 wc -l ms_data.csv
 # Display the first few records.
 head ms_data.csv
-
-
-
-# Q2
-
-
-
-# Q2.1 Load and structure the data:
-
-# Read the processed CSV file
-# Convert visit_date to datetime
-#  Sort by patient_id and visit_date
