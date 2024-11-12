@@ -44,6 +44,30 @@ Based off of the p-values, the interaction terms were not significant, showing t
    - Box plots and basic statistics
    - Calculate effect sizes
 
+I did a simple analysis of visit costs using insurance type. Similar to above, I also accounted for repeated measurements by grouping standard errors by patient_id. The selected reference group was Medicaid.
+
+                 coef    std err          t      P>|t|      [0.025      0.975]
+------------------------------------------------------------------------------
+const        198.9878      0.401    496.275      0.000     198.201     199.775
+Medicare     -99.0659      0.440   -225.291      0.000     -99.929     -98.203
+Other        300.0318      0.905    331.699      0.000     298.257     301.807
+Private     -148.9186      0.413   -361.002      0.000    -149.728    -148.109
+
+Intercept (const = 198.9878) represents the mean visit_cost for Medicaid. The model predicts that for patients with Medicaid, the average visit_cost is approximately $198.99. Medicare (coef = -99.0659) shows that the average visit_cost for patients with Medicare is $99.07 lower than for patients with Medicaid. The p-value on all the coefficients are significant.
+
+The box plot summarizes these statistics.
+
+                 count        mean        std    min     25%     50%    75%     max
+insurance_type                                                                
+Medicaid        3532.0  198.987769  23.006670  160.0  178.95  198.10  219.0   240.0
+Medicare        3981.0   99.921904  11.590122   80.0   90.00   99.60  110.3   120.0
+Other           4340.0  499.019585  57.601562  400.0  449.50  499.50  548.5   600.0
+Private         3578.0   50.069201   5.775010   40.0   45.00   50.05   55.1    60.0
+
+Since I randomly assigned insurance types, the counts are roughly the same. However, I gave different visit_cost values to each insurance type, which is revealed in the mean, median, min, and max values.
+
+I measured effect size using ANOVA because my insurance type variable had more than 2 cateogries. The Eta Squared value of 0.967 is very high and indicates that approximately 96.7% of the variance in the visit_cost can be explained by the differences in insurance_type. This suggests a very strong effect size, meaning that the type of insurance has a significant impact on visit costs.
+
 3. Advanced analysis:
    - Education age interaction effects on walking speed
    - Control for relevant confounders
