@@ -48,7 +48,7 @@ df['insurance_type'] = df['insurance_type'].astype(str)
 
 # Q3
 
-
+# View file Q3_stats_analysis.ipynb
 
 # 1. Analyze walking speed:
 #    - Multiple regression with education and age (report coeffcients and confidence intervals)
