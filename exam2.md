@@ -113,6 +113,11 @@ Perform statistical analysis on both outcomes:
    - Control for relevant confounders
    - Report key statistics and p-values
 
+Tips:
+
+- Use scipy.stats for statistical tests
+- Use statsmodels for regression analysis:
+  - Report coefficients and confidence intervals
 
 ## Question 4: Data Visualization (30 points)
 
