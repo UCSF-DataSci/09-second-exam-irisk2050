@@ -19,6 +19,26 @@ Perform statistical analysis on both outcomes:
    - Account for repeated measures
    - Test for significant trends
 
+Carrying over from question 2, I added variables 'visit_cost' and 'season' to the data. For the multiple regression, I used a simple OLS model. To account for repeated measures (as in, the same person was measured multiple times), I clustered the standard errors by 'patient_id'. The r-squared was 0.807 and the adjusted r-squared was 0.807. This means that 80.7% of the variance in walking speed is explained by the independent variables age and education level. This suggests a strong fit, as the model is explaining a substantial portion of the variability in the data. Since both the r-squared and adjusted r-squared are the same (0.807), it suggests that there aren't irrelevant variables inflating the r-squared. This implies a well-specified model with a good balance of explanatory power without overfitting. 
+
+                  coef       std err      p-value        Conf. Interval
+const            5.5992      0.008        0.00000e+000   [ 5.5832782   5.61510059]
+Graduate         0.4152      0.007        0.00000e+000   [ 0.40164808  0.4288372 ]
+High School     -0.7923      0.007        0.00000e+000   [-0.80557048 -0.77906352]
+Some College    -0.3903      0.007        3.91879e-318   [-0.40368752 -0.37696296]
+age             -0.0301      0.000        0.00000e+000   [-0.03040785 -0.02986839]
+
+All of the variables were significant (p-value < 0.05). We can see that education_level = 'Graduate' is positively correlated with walking speed. The others are negatively correlated, including age, which agrees with our intial exploratory data analysis: as age increases, walking speed decreases.
+
+To examine trends, I re-did the regression but added in interaction terms between age and education level. The coefficients for the interaction terms (e.g., age_Graduate, age_SomeOtherLevel) explain how the relationship between age and walking speed differs across education levels. A significant p-value for these interaction terms suggests that the relationship between age and walking_speed changes depending on the education_level.
+
+age                 -0.0303      0.001    -31.590      0.000      -0.032      -0.028
+age_High School   5.542e-05      0.000      0.166      0.868      -0.001       0.001
+age_Some College    -0.0001      0.000     -0.409      0.682      -0.001       0.001
+age_age           1.748e-06   8.94e-06      0.196      0.845   -1.58e-05    1.93e-05
+
+Based off of the p-values, the interaction terms were not significant, showing that the relationship between age and walking_speed does not significantly change across education level.
+
 2. Analyze costs:
    - Simple analysis of insurance type effect
    - Box plots and basic statistics
