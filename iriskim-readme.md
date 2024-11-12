@@ -12,7 +12,7 @@ For step 3, I grouped months into seasons to do a seasonal analysis of the effec
   
 ## Question 3: Statistical Analysis (25 points)
 
-Perform statistical analysis on both outcomes:
+I checked for outliers and removed them using boxplots and z-scores.
 
 1. Analyze walking speed:
    - Multiple regression with education and age
@@ -21,17 +21,25 @@ Perform statistical analysis on both outcomes:
 
 Carrying over from question 2, I added variables 'visit_cost' and 'season' to the data. For the multiple regression, I used a simple OLS model. To account for repeated measures (as in, the same person was measured multiple times), I clustered the standard errors by 'patient_id'. The r-squared was 0.807 and the adjusted r-squared was 0.807. This means that 80.7% of the variance in walking speed is explained by the independent variables age and education level. This suggests a strong fit, as the model is explaining a substantial portion of the variability in the data. Since both the r-squared and adjusted r-squared are the same (0.807), it suggests that there aren't irrelevant variables inflating the r-squared. This implies a well-specified model with a good balance of explanatory power without overfitting. 
 
-                  coef       std err      p-value        Conf. Interval
-const            5.5992      0.008        0.00000e+000   [ 5.5832782   5.61510059]
-Graduate         0.4152      0.007        0.00000e+000   [ 0.40164808  0.4288372 ]
-High School     -0.7923      0.007        0.00000e+000   [-0.80557048 -0.77906352]
-Some College    -0.3903      0.007        3.91879e-318   [-0.40368752 -0.37696296]
-age             -0.0301      0.000        0.00000e+000   [-0.03040785 -0.02986839]
+                   coef    std err          t      P>|t|      [0.025      0.975]
+--------------------------------------------------------------------------------
+const            5.5986      0.008    690.039      0.000       5.583       5.615
+Graduate         0.4146      0.007     59.771      0.000       0.401       0.428
+High School     -0.7923      0.007   -117.342      0.000      -0.806      -0.779
+Some College    -0.3903      0.007    -57.334      0.000      -0.404      -0.377
+age             -0.0301      0.000   -218.957      0.000      -0.030      -0.030
 
 All of the variables were significant (p-value < 0.05). We can see that education_level = 'Graduate' is positively correlated with walking speed. The others are negatively correlated, including age, which agrees with our intial exploratory data analysis: as age increases, walking speed decreases.
 
 To examine trends, I re-did the regression but added in interaction terms between age and education level. The coefficients for the interaction terms (e.g., age_Graduate, age_SomeOtherLevel) explain how the relationship between age and walking speed differs across education levels. A significant p-value for these interaction terms suggests that the relationship between age and walking_speed changes depending on the education_level.
 
+====================================================================================
+                       coef    std err          t      P>|t|      [0.025      0.975]
+------------------------------------------------------------------------------------
+const                5.6021      0.024    233.954      0.000       5.555       5.649
+Graduate             0.4152      0.007     59.692      0.000       0.402       0.429
+High School         -0.7952      0.018    -43.039      0.000      -0.831      -0.759
+Some College        -0.3833      0.018    -20.861      0.000      -0.419      -0.347
 age                 -0.0303      0.001    -31.590      0.000      -0.032      -0.028
 age_High School   5.542e-05      0.000      0.166      0.868      -0.001       0.001
 age_Some College    -0.0001      0.000     -0.409      0.682      -0.001       0.001
@@ -73,8 +81,20 @@ I measured effect size using ANOVA because my insurance type variable had more t
    - Control for relevant confounders
    - Report key statistics and p-values
 
-- All questions: Summarize your efforts and results in `readme.md`
-- Q3: Check for outliers before running statistical tests
+                                         coef    std err          t      P>|t|      [0.025      0.975]
+------------------------------------------------------------------------------------------------------
+Intercept                              5.5973      0.013    418.464      0.000       5.571       5.623
+C(education_level)[T.Graduate]         0.4166      0.010     41.083      0.000       0.397       0.436
+C(education_level)[T.High School]     -0.7896      0.016    -50.740      0.000      -0.820      -0.759
+C(education_level)[T.Some College]    -0.3862      0.022    -17.785      0.000      -0.429      -0.344
+age                                   -0.0301      0.000   -121.494      0.000      -0.031      -0.030
+age_education_interaction          -2.697e-05      0.000     -0.201      0.841      -0.000       0.000
+
+The r-squared and adjusted r-squared are both 0.807, the same as the regression without interaction terms. We can also see that the interaction term is not significant. This means that the interaction terms did not improve the explanatory power of the model. 
+
+One of the most significant variables is age. The coefficient for age is -0.0301, which indicates that as age increases by one unit, the walking speed decreases by 0.0301 units. The extremely low p-value suggests this variable has a strong effect on the dependent variable. For education levels, Graduate has a positive coefficient (0.4166), indicating that graduates have a higher walking speed compared to the baseline education level (likely the lowest category). High School shows a negative coefficient (-0.7896), implying that individuals with only a high school education tend to have significantly lower walking speed. All education levels are highly significant, with p-values of 0.000, indicating their importance in the model.
+
+The interaction term has coefficient -2.697e-05 with a p-value of 0.841, suggesting that the interaction between age and education level does not have a statistically significant effect on walking speed. This implies that the relationship between age and walking speed is not notably influenced by different education levels.
   
 ## Question 4: Data Visualization (30 points)
 
