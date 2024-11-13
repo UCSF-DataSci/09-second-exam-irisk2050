@@ -105,22 +105,20 @@ Create visualizations for both walking speed and cost analyses in a Jupyter note
    - Box plots by education level
    - Line plot showing education age interaction
 
+The walking speed analysis shows that there is a slight downwards trend in average walking speed as age increases. This makes sense, as people generally are less mobile and active the older they are. The box plots by education level showed that those with higher levels of education (Bachelors, Graduate) had higher average walking speeds than those with lower levels of education (High School, Some College). There was also one outlier in each education level. The line plot showing the education and age interaction shows that within each education_level, the trend of older = slower average walking speed generally holds true. For example, within the group High School (which has the lowest median walking speed according to the boxplot), the age group 70-79 is hovering around an average monthly walking speed of 2.5 feet/sec while the age group 20-29 is hovering between 4.0-4.5 feet/sec.
+
 2. Cost analysis:
    - Bar plot of mean costs by insurance type
    - Box plots showing cost distributions
    - Add error bars or confidence intervals
+
+The bar plot shows them mean visit costs by insurance type, with a black bar representing the standard deviation. Private insurance had the lowest average visit cost while Other insurance had the highest. The boxplot showcasing the distirbution of visit costs per insurance type showed that there were no outliers per insurance group. Other insurance had the widest variation in visit cost. The frequency histogram of number of visits of eaach visit cost showed that there were many more visits that cost <= $100. This could imply a few things:
+   1) Many more people have Private or Medicaid insurance than other types of insurance.
+   2) People who have Private or Medicaid insurance have more visits/go more often, and are thus more represented.
 
 3. Combined visualizations:
    - Pair plot of key variables
    - Faceted plots by education/insurance
    - Time trends where relevant
 
-- All questions: Summarize your efforts and results in `readme.md`
-- Q4: Verify plot readability by viewing at different zoom levels
-  
-### Bonus Points (10 points)
-
-- Implement advanced statistical methods
-- Create interactive visualizations
-- Analyze additional patterns
-- Add command-line argument parsing
+The pair plots confirm a lot of our earlier findings. In the age vs walking speed plot, we can clearly see within each education level there is a downwards trend in average walking speed as age increases. When examining the walking speed vs. visit cost plot, we can see that education levels are spread across visit costs evenly. This makes sense, as I randomly assigned insurance (and thus visit costs) to each patient_id. However, we see the trend of Graduate education level people having higher average walking speeds across all visit costs and high school education level people having lower average walking speeds across all visits costs. The faceted plots show that regardless of education level or insurance type, the trend of increase in age = slower walking speed holds. This implies that age is the most important factor in predicting walking speed, since its trend is unaffected by education level or insurance type. Examining time trends, there were noticable "peaks" and "valleys" in all education levels and age groups. Groups "peaked" in walking speed during summer and fall and "valley-ed" in spring and winter. This makes sense; generally, weather is nicer in summer and more pleasant to go out in, whereas in the winter, it's harder to move around because of ice and snow, forcing people to walk slower and be more cautious.
