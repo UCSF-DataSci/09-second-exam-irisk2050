@@ -12,22 +12,25 @@ For step 3, I grouped months into seasons to do a seasonal analysis of the effec
   
 ## Question 3: Statistical Analysis (25 points)
 
-I checked for outliers and removed them using boxplots and z-scores.
+I checked for duplicate rows and duplicate pairs of patient_id and visit_date (if a patient had multiple measurements taken on the same date). There were none.
+
+I checked for outliers and removed them using boxplots and z-scores > 2.5.
 
 1. Analyze walking speed:
    - Multiple regression with education and age
    - Account for repeated measures
    - Test for significant trends
 
-Carrying over from question 2, I added variables 'visit_cost' and 'season' to the data. For the multiple regression, I used a simple OLS model. To account for repeated measures (as in, the same person was measured multiple times), I clustered the standard errors by 'patient_id'. The r-squared was 0.807 and the adjusted r-squared was 0.807. This means that 80.7% of the variance in walking speed is explained by the independent variables age and education level. This suggests a strong fit, as the model is explaining a substantial portion of the variability in the data. Since both the r-squared and adjusted r-squared are the same (0.807), it suggests that there aren't irrelevant variables inflating the r-squared. This implies a well-specified model with a good balance of explanatory power without overfitting. 
+Carrying over from question 2, I added variables 'visit_cost' and 'season' to the data. For the multiple regression, I used a simple OLS model. To account for repeated measures (as in, the same person was measured multiple times), I clustered the standard errors by 'patient_id'. The r-squared was 0.807 and the adjusted r-squared was 0.806. This means that 80.6% of the variance in walking speed is explained by the independent variables age and education level. This suggests a strong fit, as the model is explaining a substantial portion of the variability in the data. Since both the r-squared and adjusted r-squared are the same (0.807), it suggests that there aren't irrelevant variables inflating the r-squared. This implies a well-specified model with a good balance of explanatory power without overfitting. 
 
+================================================================================
                    coef    std err          t      P>|t|      [0.025      0.975]
 --------------------------------------------------------------------------------
-const            5.5986      0.008    690.039      0.000       5.583       5.615
-Graduate         0.4146      0.007     59.771      0.000       0.401       0.428
-High School     -0.7923      0.007   -117.342      0.000      -0.806      -0.779
-Some College    -0.3903      0.007    -57.334      0.000      -0.404      -0.377
-age             -0.0301      0.000   -218.957      0.000      -0.030      -0.030
+const            5.5896      0.008    692.059      0.000       5.574       5.605
+Graduate         0.4065      0.007     58.886      0.000       0.393       0.420
+High School     -0.7922      0.007   -117.708      0.000      -0.805      -0.779
+Some College    -0.3901      0.007    -57.440      0.000      -0.403      -0.377
+age             -0.0300      0.000   -217.974      0.000      -0.030      -0.030
 
 All of the variables were significant (p-value < 0.05). We can see that education_level = 'Graduate' is positively correlated with walking speed. The others are negatively correlated, including age, which agrees with our intial exploratory data analysis: as age increases, walking speed decreases.
 
@@ -36,14 +39,14 @@ To examine trends, I re-did the regression but added in interaction terms betwee
 ====================================================================================
                        coef    std err          t      P>|t|      [0.025      0.975]
 ------------------------------------------------------------------------------------
-const                5.6021      0.024    233.954      0.000       5.555       5.649
-Graduate             0.4152      0.007     59.692      0.000       0.402       0.429
-High School         -0.7952      0.018    -43.039      0.000      -0.831      -0.759
-Some College        -0.3833      0.018    -20.861      0.000      -0.419      -0.347
-age                 -0.0303      0.001    -31.590      0.000      -0.032      -0.028
-age_High School   5.542e-05      0.000      0.166      0.868      -0.001       0.001
-age_Some College    -0.0001      0.000     -0.409      0.682      -0.001       0.001
-age_age           1.748e-06   8.94e-06      0.196      0.845   -1.58e-05    1.93e-05
+const                5.5594      0.024    233.732      0.000       5.513       5.606
+Graduate             0.4058      0.007     58.748      0.000       0.392       0.419
+High School         -0.7770      0.018    -42.110      0.000      -0.813      -0.741
+Some College        -0.3651      0.018    -20.004      0.000      -0.401      -0.329
+age                 -0.0288      0.001    -30.181      0.000      -0.031      -0.027
+age_High School     -0.0003      0.000     -0.916      0.360      -0.001       0.000
+age_Some College    -0.0005      0.000     -1.488      0.137      -0.001       0.000
+age_age          -8.817e-06   8.92e-06     -0.988      0.323   -2.63e-05    8.69e-06
 
 Based off of the p-values, the interaction terms were not significant, showing that the relationship between age and walking_speed does not significantly change across education level.
 
@@ -54,23 +57,24 @@ Based off of the p-values, the interaction terms were not significant, showing t
 
 I did a simple analysis of visit costs using insurance type. Similar to above, I also accounted for repeated measurements by grouping standard errors by patient_id. The selected reference group was Medicaid.
 
+==============================================================================
                  coef    std err          t      P>|t|      [0.025      0.975]
 ------------------------------------------------------------------------------
-const        198.9878      0.401    496.275      0.000     198.201     199.775
-Medicare     -99.0659      0.440   -225.291      0.000     -99.929     -98.203
-Other        300.0318      0.905    331.699      0.000     298.257     301.807
-Private     -148.9186      0.413   -361.002      0.000    -149.728    -148.109
+const        199.0164      0.401    496.868      0.000     198.230     199.802
+Medicare     -99.0970      0.439   -225.568      0.000     -99.959     -98.235
+Other        300.0079      0.906    331.277      0.000     298.231     301.785
+Private     -148.9485      0.412   -361.413      0.000    -149.757    -148.140
 
-Intercept (const = 198.9878) represents the mean visit_cost for Medicaid. The model predicts that for patients with Medicaid, the average visit_cost is approximately $198.99. Medicare (coef = -99.0659) shows that the average visit_cost for patients with Medicare is $99.07 lower than for patients with Medicaid. The p-value on all the coefficients are significant.
+Intercept (const = 199.0164) represents the mean visit_cost for Medicaid. The model predicts that for patients with Medicaid, the average visit_cost is approximately $199.02. Medicare (coef = -99.0970) shows that the average visit_cost for patients with Medicare is $99.10 lower than for patients with Medicaid. The p-value on all the coefficients are significant.
 
 The box plot summarizes these statistics.
 
-                 count        mean        std    min     25%     50%    75%     max
-insurance_type                                                                
-Medicaid        3532.0  198.987769  23.006670  160.0  178.95  198.10  219.0   240.0
-Medicare        3981.0   99.921904  11.590122   80.0   90.00   99.60  110.3   120.0
-Other           4340.0  499.019585  57.601562  400.0  449.50  499.50  548.5   600.0
-Private         3578.0   50.069201   5.775010   40.0   45.00   50.05   55.1    60.0
+                count        mean        std    min    25%     50%      75%       max
+insurance_type                                                                 
+Medicaid        3519.0  199.016425  22.999023  160.0  179.0  198.40  219.000    240.0
+Medicare        3977.0   99.919437  11.589422   80.0   90.0   99.60  110.300    120.0
+Other           4324.0  499.024283  57.575972  400.0  449.5  499.50  548.125    600.0
+Private         3565.0   50.067910   5.773130   40.0   45.0   50.05   55.100     60.0
 
 Since I randomly assigned insurance types, the counts are roughly the same. However, I gave different visit_cost values to each insurance type, which is revealed in the mean, median, min, and max values.
 
@@ -81,20 +85,21 @@ I measured effect size using ANOVA because my insurance type variable had more t
    - Control for relevant confounders
    - Report key statistics and p-values
 
+======================================================================================================
                                          coef    std err          t      P>|t|      [0.025      0.975]
 ------------------------------------------------------------------------------------------------------
-Intercept                              5.5973      0.013    418.464      0.000       5.571       5.623
-C(education_level)[T.Graduate]         0.4166      0.010     41.083      0.000       0.397       0.436
-C(education_level)[T.High School]     -0.7896      0.016    -50.740      0.000      -0.820      -0.759
-C(education_level)[T.Some College]    -0.3862      0.022    -17.785      0.000      -0.429      -0.344
-age                                   -0.0301      0.000   -121.494      0.000      -0.031      -0.030
-age_education_interaction          -2.697e-05      0.000     -0.201      0.841      -0.000       0.000
+Intercept                              5.5826      0.013    418.870      0.000       5.556       5.609
+C(education_level)[T.Graduate]         0.4113      0.010     40.769      0.000       0.391       0.431
+C(education_level)[T.High School]     -0.7823      0.015    -50.562      0.000      -0.813      -0.752
+C(education_level)[T.Some College]    -0.3753      0.022    -17.377      0.000      -0.418      -0.333
+age                                   -0.0298      0.000   -120.750      0.000      -0.030      -0.029
+age_education_interaction            -9.8e-05      0.000     -0.734      0.463      -0.000       0.000
 
-The r-squared and adjusted r-squared are both 0.807, the same as the regression without interaction terms. We can also see that the interaction term is not significant. This means that the interaction terms did not improve the explanatory power of the model. 
+The r-squared and adjusted r-squared are both 0.806, the same as the regression without interaction terms. We can also see that the interaction term is not significant. This means that the interaction terms did not improve the explanatory power of the model. 
 
-One of the most significant variables is age. The coefficient for age is -0.0301, which indicates that as age increases by one unit, the walking speed decreases by 0.0301 units. The extremely low p-value suggests this variable has a strong effect on the dependent variable. For education levels, Graduate has a positive coefficient (0.4166), indicating that graduates have a higher walking speed compared to the baseline education level (likely the lowest category). High School shows a negative coefficient (-0.7896), implying that individuals with only a high school education tend to have significantly lower walking speed. All education levels are highly significant, with p-values of 0.000, indicating their importance in the model.
+One of the most significant variables is age. The coefficient for age is -0.0298 , which indicates that as age increases by one unit, the walking speed decreases by 0.0301 units. The extremely low p-value suggests this variable has a strong effect on the dependent variable. For education levels, Graduate has a positive coefficient (0.4113), indicating that graduates have a higher walking speed compared to the baseline education level (likely the lowest category). High School shows a negative coefficient (-0.7896), implying that individuals with only a high school education tend to have significantly lower walking speed. All education levels are highly significant, with p-values of 0.000, indicating their importance in the model.
 
-The interaction term has coefficient -2.697e-05 with a p-value of 0.841, suggesting that the interaction between age and education level does not have a statistically significant effect on walking speed. This implies that the relationship between age and walking speed is not notably influenced by different education levels.
+The interaction term has coefficient -9.8e-05 with a p-value of 0.463, suggesting that the interaction between age and education level does not have a statistically significant effect on walking speed. This implies that the relationship between age and walking speed is not notably influenced by different education levels.
   
 ## Question 4: Data Visualization (30 points)
 
